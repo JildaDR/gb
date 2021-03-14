@@ -108,7 +108,7 @@ CREATE TABLE rewards (
   color_id CHAR(7) NOT NULL COMMENT "ссылка на HEX Код цвета",
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT "Время создания строки",  
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "Время обновления строки"
-) COMMENT "Цвета";
+) COMMENT "Награды";
 
 
 -- Таблица списка опросов
@@ -134,21 +134,33 @@ DROP TABLE IF EXISTS questions;
 CREATE TABLE questions (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT "Идентификатор вопроса",
   name TEXT NOT NULL COMMENT "Вопрос",
+  poll_id INT UNSIGNED NOT NULL COMMENT "Ссылка на опрос", 
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT "Время создания строки",  
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "Время обновления строки"  
-) COMMENT "Список опросов";
+) COMMENT "Таблица вопросов";
 
--- Каталог ответов
+-- Каталог вариантов ответов
 DROP TABLE IF EXISTS answer_form;
 CREATE TABLE answer_form (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT "Идентификатор ответа",
   name VARCHAR(150) NOT NULL UNIQUE COMMENT "Ответ",
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT "Время создания строки",  
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "Время обновления строки"  
-) COMMENT "Список ответов";
+) COMMENT "Варианты ответов";
 
 
 
 -- Заполняем формы ответов
 INSERT INTO answer_form (name) VALUES ('yes'), ('no'), ('not sure');
+
+-- Список ответов на опросы
+DROP TABLE IF EXISTS answers;
+CREATE TABLE answers (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT "Идентификатор ответа",
+  poll_id INT UNSIGNED NOT NULL COMMENT "Ссылка на опрос",
+  question_id INT UNSIGNED NOT NULL COMMENT "Ссылка на вопрос",
+  answer_id INT UNSIGNED NOT NULL COMMENT "Ссылка на ответ",
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT "Время создания строки",  
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "Время обновления строки"  
+) COMMENT "Список ответов";
 
